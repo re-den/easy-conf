@@ -163,13 +163,13 @@ fi
         read loc_dir
 		#echo $HOME/$loc_dir
 		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
-		if [ $pr_inst -eq "ok" ]; then 
+		if [ "$pr_inst" -eq "ok" ]; then 
 		echo "Samba уже установлена"
-		else 
+		else
 		echo "Надо установить Samba"
 		fi
 		;;
-	0) repeat=false 
+	0) repeat=false
 		;;
 	*)
 		echo "Неправильный выбор."

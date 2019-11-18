@@ -161,12 +161,16 @@ fi
         #read share
 		echo "Укажите локальный каталог, который нужно сделать общим"
         read loc_dir
-		#echo $HOME/$loc_dir
-		pr_inst=$`dpkg -s samba | grep ok | awk '{print $3}'`
-		if [ $pr_inst -eq "ok" ]; then 
+		mkdir $HOME/$loc_dir
+		chmod 777 $HOME/$loc_dir
+		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
+		if [ "$pr_inst" == "ok" ]; then 
 		echo "Samba уже установлена"
 		else 
 		echo "Надо установить Samba"
+		apt install -y samba
+		echo " [$locdir]\n writable = yes\n path = $HOME/$loc_dir\n public = yes\n " >> /etc/samba/smb.conf
+		service smbd restart
 		fi
 		;;
 	0) repeat=false 

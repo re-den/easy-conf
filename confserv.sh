@@ -162,7 +162,7 @@ fi
 		echo "Укажите локальный каталог, который нужно сделать общим"
         read loc_dir
 		#echo $HOME/$loc_dir
-		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
+		pr_inst=$`dpkg -s samba | grep ok | awk '{print $3}'`
 		if [ $pr_inst -eq "ok" ]; then 
 		echo "Samba уже установлена"
 		else 

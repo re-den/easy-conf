@@ -105,7 +105,8 @@ echo "Начинаем настройку Samba."
 echo "[$loc_dir]"
 echo "writable = yes"
 echo "path = $HOME/$loc_dir"
-echo "public = yes\n " } >> /etc/samba/smb.conf
+echo "public = yes" 
+} >> /etc/samba/smb.conf
 service smbd restart	
 }
 

@@ -67,9 +67,16 @@ eval $1=$temp
 mc_install()
 {
 #update source list
-apt-get update
-#Install Webmin
-apt-get -y install mc
+apt update
+#Install mc
+pr_inst=`dpkg -s mc | grep ok | awk '{print $3}'` #Проверка установлен MC или нет
+if [ "$pr_inst" -eq "ok" ]; then
+echo "Midnight Commander уже установлен"
+else
+echo "Начинаю установку"
+apt -y install mc
+samba_conf
+fi
 }
 
 

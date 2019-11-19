@@ -9,7 +9,7 @@ title_full="$title $ver"
 filename='confserv.sh'
 #updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/master' #релиз
 #updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/beta' #бета
-updpath='https://github.com/re-den/easy-conf'
+updpath='https://re-den.github.io/easy-conf/confserv.sh'
 
 updatescript()
 {

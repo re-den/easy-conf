@@ -6,6 +6,16 @@ title_full="$title $ver"
 #типовые функции
 #-----------------
 
+filename='confserv.sh'
+#updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/master' #релиз
+#updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/beta' #бета
+updpath='https://github.com/re-den/easy-conf'
+
+updatescript()
+{
+wget $updpath/$filename -r -N -nd --no-check-certificate
+chmod 777 $filename
+}
 
 my_clear()
 {
@@ -78,30 +88,17 @@ apt-get update
 apt-get -y install webmin
 }
 
-samba_conf()
-{
-echo "Укажите локальный каталог, который нужно сделать общим. Если его нет, то он будет создан."
-read loc_dir
-mkdir $HOME/$loc_dir
-chmod 777 $HOME/$loc_dir
-echo "Начинаем настройку Samba."
-{
-echo "[$loc_dir]"
-echo "writable = yes"
-echo "path = $HOME/$loc_dir"
-echo "public = yes\n " } >> /etc/samba/smb.conf
-service smbd restart	
-}
+
 
 menu="
 ┌─────────────────────────────────────────────┐
 │  $title $ver$space│
 ├───┬─────────────────────────────────────────┤
-│ 1 │ Установка WebMin                        │
+│ 1 │ Информация о системе                    │
 ├───┼─────────────────────────────────────────┤
-│ 2 │ Установить Midnight Commander (MC)      │
+│ 2 │ Установка WebMin                        │
 ├───┼─────────────────────────────────────────┤
-│ 3 │ Удалить пакет %packet% полностью        │
+│ 3 │ Установить Midnight Commander (MC)      │
 ├───┼─────────────────────────────────────────┤
 │ 4 │ Установка и настройка Samba             │
 ├───┼─────────────────────────────────────────┤
@@ -170,15 +167,25 @@ fi
         wait
 		;;
 	4) #Установка Samba
+        #echo "Укажите название общей папки"
+        #read share
+		echo "Укажите локальный каталог, который нужно сделать общим"
+        read loc_dir
+		#echo $HOME/$loc_dir
 		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
-		if [ "$pr_inst" == "ok" ]; then 
-		samba_conf
-		else 		
-		echo "Надо установить Samba."
-		apt install -y samba
-		samba_conf
+		if [ $(pr_inst) -eq "ok" ]; then 
+		echo "Samba уже установлена"
+		else 
+		echo "Надо установить Samba"
 		fi
 		;;
+	9) #Обновить Breeze Easy Shell
+	echo "обновляю..."
+	updatescript
+	repeat=false
+	sh $0
+	exit 0
+	;;
 	0) repeat=false 
 		;;
 	*)

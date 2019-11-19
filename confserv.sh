@@ -88,6 +88,21 @@ apt-get update
 apt-get -y install webmin
 }
 
+samba_conf()
+{
+echo "Samba уже установлена. Начинаем настройку.\n"
+echo "Укажите локальный каталог, который нужно сделать общим. Если его нет, то он будет создан."
+read loc_dir
+mkdir $HOME/$loc_dir
+chmod 777 $HOME/$loc_dir
+echo "Начинаем настройку Samba."
+{
+echo "[$loc_dir]"
+echo "writable = yes"
+echo "path = $HOME/$loc_dir"
+echo "public = yes\n " } >> /etc/samba/smb.conf
+service smbd restart	
+}
 
 
 menu="
@@ -174,12 +189,19 @@ fi
 		#echo $HOME/$loc_dir
 		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
 		if [ "$pr_inst" -eq "ok" ]; then
-		echo "Samba уже установлена"
+		samba_conf
 		else
-		echo "Надо установить Samba"
+		echo "Необходимо установить Samba"
 		apt install -y samba
 		samba_conf
 		fi
+		;;
+	9) #Обновить Easy ConfServ
+		echo "обновляю..."
+		updatescript
+		repeat=false
+		sh $0
+		exit 0
 		;;
 	0) repeat=false
 		;;

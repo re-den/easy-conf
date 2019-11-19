@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="v0.0.2                  "
+ver="v0.0.21                  "
 title="Easy Install Shell"
 title_full="$title $ver"
 #-----------------
@@ -10,6 +10,30 @@ filename='confserv.sh'
 #updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/master' #релиз
 #updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/beta' #бета
 updpath='https://re-den.github.io/easy-conf'
+
+title()
+{
+my_clear
+echo "$title"
+}
+
+menu()
+{
+my_clear
+echo "$menu"
+echo "Выберите пункт меню:"
+}
+
+wait()
+{
+echo "Нажмите любую клавишу, чтобы продолжить..."
+read -s -n 1
+}
+
+br()
+{
+echo ""
+}
 
 updatescript()
 {
@@ -63,7 +87,6 @@ done
 eval $1=$temp
 }
 
-
 mc_install()
 {
 #update source list
@@ -78,7 +101,6 @@ apt -y install mc
 samba_conf
 fi
 }
-
 
 webmin_install()
 {
@@ -161,62 +183,56 @@ else
 pick=$chosen
 fi
 
-#case "$pick" in
-#1) #Информация о системе
-#chosen=1
-#my_clear
-#echo "$title"
-#echo "$menu1"
-#myread_dig pick
-    case "$pick" in
-    1) #Webmin install
-		my_clear
-		echo "Запускаю установку Webmin"
-		webmin_install
-		my_clear
-		br
-		wait
-		;;
-    2) #Показать общую информацию о системе
-		my_clear
-		echo "Запускаю установку Webmin"
-		mc_install
-		my_clear
-		br
-		wait
-		;;
-	3) #Удалить какую-либо программу со всеми зависимостями
+case "$pick" in
+1) #Webmin install
+	my_clear
+	echo "Запускаю установку Webmin"
+	webmin_install
+	my_clear
+	br
+	wait
+	;;
+2) #Показать общую информацию о системе
+	my_clear
+	echo "Запускаю установку MC"
+	mc_install
+	my_clear
+	br
+	wait
+	;;
+3) #Удалить какую-либо программу со всеми зависимостями
         echo "Укажите название пакета который нужно полностью удалить"
         read answer
         apt-get purge $answer
         br
         echo "Готово."
         wait
-		;;
-	4) #Установка Samba
-		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
-		if [ "$pr_inst" -eq "ok" ]; then
-		samba_conf
-		else
-		echo "Необходимо установить Samba"
-		apt install -y samba
-		samba_conf
-		fi
-		;;
-	9) #Обновить Easy ConfServ
-		echo "обновляю..."
-		updatescript
-		repeat=false
-		sh $0
-		exit 0
-		;;
-	0) repeat=false
-		;;
+	;;
+4) #Установка Samba
+	pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
+	if [ "$pr_inst" -eq "ok" ]; then
+	samba_conf
+	else
+	echo "Необходимо установить Samba"
+	apt install -y samba
+	samba_conf
+	fi
+	;;
+9) #Обновить Easy ConfServ
+	echo "обновляю..."
+	updatescript
+	repeat=false
+	wait
+	sh $0
+	exit 0
+	;;
+0) repeat=false
+	;;
 	*)
-		echo "Неправильный выбор."
-		wait
-		;;
-	esac
+	echo "Неправильный выбор. $pick"
+	wait
+	;;
+esac
 done
 echo "Скрипт ожидаемо завершил свою работу."
 echo -e "$normal"

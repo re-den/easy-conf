@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="v0.0.2b                  "
+ver="v0.0.2                  "
 title="Easy Install Shell"
 title_full="$title $ver"
 #-----------------

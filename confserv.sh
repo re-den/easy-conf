@@ -6,6 +6,16 @@ title_full="$title $ver"
 #типовые функции
 #-----------------
 
+filename='confserv.sh'
+#updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/master' #релиз
+#updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/beta' #бета
+updpath='https://github.com/re-den/easy-conf'
+
+updatescript()
+{
+wget $updpath/$filename -r -N -nd --no-check-certificate
+chmod 777 $filename
+}
 
 my_clear()
 {
@@ -78,20 +88,7 @@ apt-get update
 apt-get -y install webmin
 }
 
-samba_conf()
-{
-echo "Укажите локальный каталог, который нужно сделать общим. Если его нет, то он будет создан."
-read loc_dir
-mkdir $HOME/$loc_dir
-chmod 777 $HOME/$loc_dir
-echo "Начинаем настройку Samba."
-{
-echo "[$loc_dir]"
-echo "writable = yes"
-echo "path = $HOME/$loc_dir"
-echo "public = yes\n " } >> /etc/samba/smb.conf
-service smbd restart
-}
+
 
 menu="
 ┌─────────────────────────────────────────────┐
@@ -101,7 +98,7 @@ menu="
 ├───┼─────────────────────────────────────────┤
 │ 2 │ Установить Midnight Commander (MC)      │
 ├───┼─────────────────────────────────────────┤
-│ 3 │ Удалить пакет %packet% полностью        │
+│ 3 │ Удалить %packet% полностью              │
 ├───┼─────────────────────────────────────────┤
 │ 4 │ Установка и настройка Samba             │
 ├───┼─────────────────────────────────────────┤
@@ -113,7 +110,7 @@ menu="
 ├───┼─────────────────────────────────────────┤
 │ 8 │                                         │
 ├───┼─────────────────────────────────────────┤
-│ 9 │                                         │
+│ 9 │ Обновить Easy ConfServ с GitHub         │
 ├───┼─────────────────────────────────────────┤
 │ 0 │ Выход                                   │
 └───┴─────────────────────────────────────────┘
@@ -170,6 +167,11 @@ fi
         wait
 		;;
 	4) #Установка Samba
+        #echo "Укажите название общей папки"
+        #read share
+		echo "Укажите локальный каталог, который нужно сделать общим"
+        read loc_dir
+		#echo $HOME/$loc_dir
 		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
 		if [ "$pr_inst" -eq "ok" ]; then
 		echo "Samba уже установлена"

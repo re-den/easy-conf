@@ -90,6 +90,11 @@ apt-get -y install webmin
 
 samba_conf()
 {
+#echo "Укажите название общей папки"
+#read share
+echo "Укажите локальный каталог, который нужно сделать общим"
+read loc_dir
+#echo $HOME/$loc_dir
 echo "Samba уже установлена. Начинаем настройку.\n"
 echo "Укажите локальный каталог, который нужно сделать общим. Если его нет, то он будет создан."
 read loc_dir
@@ -103,7 +108,6 @@ echo "path = $HOME/$loc_dir"
 echo "public = yes\n " } >> /etc/samba/smb.conf
 service smbd restart	
 }
-
 
 menu="
 ┌─────────────────────────────────────────────┐
@@ -182,11 +186,6 @@ fi
         wait
 		;;
 	4) #Установка Samba
-        #echo "Укажите название общей папки"
-        #read share
-		echo "Укажите локальный каталог, который нужно сделать общим"
-        read loc_dir
-		#echo $HOME/$loc_dir
 		pr_inst=`dpkg -s samba | grep ok | awk '{print $3}'`
 		if [ "$pr_inst" -eq "ok" ]; then
 		samba_conf

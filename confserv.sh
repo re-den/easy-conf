@@ -1,5 +1,5 @@
 #!/bin/bash
-ver="v0.0.21                  "
+ver="v0.0.211                  "
 title="Easy Install Shell"
 title_full="$title $ver"
 #-----------------
@@ -221,7 +221,7 @@ case "$pick" in
 9) #Обновить Easy ConfServ
 	echo "обновляю..."
 	updatescript
-	repeat=false
+	repeat=true
 	wait
 	sh $0
 	exit 0

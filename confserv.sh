@@ -6,10 +6,8 @@ title_full="$title $ver"
 #типовые функции
 #-----------------
 
-filename='confserv.sh'
-#updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/master' #релиз
-#updpath='https://raw.githubusercontent.com/Brizovsky/Breeze-Easy-Shell/beta' #бета
-updpath='https://re-den.github.io/easy-conf'
+filename="confserv.sh"
+updpath="https://github.com/re-den/easy-conf.git"
 
 title()
 {
